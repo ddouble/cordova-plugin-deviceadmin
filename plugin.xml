@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-deviceadmin" version="1.0.0" 
+    xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Deviceadmin</name>
+    <js-module name="deviceAdmin" src="www/deviceadmin.js">
+        <clobbers target="cordova.plugins.deviceAdmin"/>
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="DeviceAdmin">
+                <param name="android-package" value="com.mama.deviceadmin.DeviceAdmin"/>
+            </feature>
+        </config-file>
+        <!--<framework src="src/android/deviceadmin.gradle" custom="true" type="gradleReference"/>-->
+        <config-file target="AndroidManifest.xml" parent="/*">
+
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        <receiver android:label="@string/app_name" android:description="@string/app_name" android:name="com.mama.deviceadmin.CordovaDeviceAdminReceiver" android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data android:name="android.app.device_admin" android:resource="@xml/deviceadmin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+        </config-file>
+        <resource-file src="src/android/deviceadmin.xml" target="res/xml/deviceadmin.xml" />
+        <source-file src="src/android/CordovaDeviceAdminReceiver.java" target-dir="src/com/mama/deviceadmin"/>
+        <source-file src="src/android/DeviceAdmin.java" target-dir="src/com/mama/deviceadmin"/>
+    </platform>
+</plugin>
