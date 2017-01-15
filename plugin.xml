@@ -26,6 +26,7 @@
         </config-file>
         <resource-file src="src/android/deviceadmin.xml" target="res/xml/deviceadmin.xml" />
         <source-file src="src/android/CordovaDeviceAdminReceiver.java" target-dir="src/com/mama/deviceadmin"/>
+        <source-file src="src/android/AppUpdater.java" target-dir="src/com/mama/deviceadmin"/>
         <source-file src="src/android/DeviceAdmin.java" target-dir="src/com/mama/deviceadmin"/>
     </platform>
 </plugin>

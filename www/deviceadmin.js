@@ -30,6 +30,15 @@ DeviceAdmin.prototype.turnOffScreen = function(success, error) {
     exec(success, error, "DeviceAdmin", "turnOffScreen", []);
 };
 
+DeviceAdmin.prototype.updateApp = function(url, success, error) {
+    exec(success, error, "DeviceAdmin", "updateApp", [url]);
+};
+
+DeviceAdmin.prototype.installPackage = function(uri, success, error) {
+    exec(success, error, "DeviceAdmin", "installPackage", [uri]);
+};
+
+
 
 
 channel.onCordovaReady.subscribe(function() {

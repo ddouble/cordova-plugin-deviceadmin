@@ -2,20 +2,15 @@ package com.mama.deviceadmin;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import org.apache.cordova.CordovaArgs;
 import org.apache.cordova.CordovaInterface;
@@ -25,8 +20,8 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,6 +40,7 @@ public class DeviceAdmin extends CordovaPlugin {
     private CallbackContext callbackCtx;
     private PowerManager powerManager;
     private PowerManager.WakeLock wakeLock;
+    private AppUpdater appUpdater;
 
     /**
      * Constructor.
@@ -89,9 +85,30 @@ public class DeviceAdmin extends CordovaPlugin {
             Boolean keepOn = args.getBoolean(0);
             this.turnOnScreen(keepOn, callbackContext);
             return true;
+        } else if (action.equals("updateApp")) {
+            String url = args.getString(0);
+            this.updateApp(url, callbackContext);
+            return true;
+        } else if (action.equals("installPackage")) {
+            String uri = args.getString(0);
+            this.installPackage(uri, callbackContext);
+            return true;
         }
 
         return false;
+    }
+
+    private void installPackage(String uri, CallbackContext callbackContext) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(new File(uri)), "application/vnd.android.package-archive");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // without this flag android returned a intent error!
+        cordova.getActivity().startActivity(intent);
+    }
+
+    private void updateApp(String url, CallbackContext callbackContext) {
+        appUpdater = new AppUpdater();
+        appUpdater.setContext(cordova.getActivity().getApplicationContext());
+        appUpdater.execute(url);
     }
 
     private void turnOffScreen(final CallbackContext callbackContext) {
