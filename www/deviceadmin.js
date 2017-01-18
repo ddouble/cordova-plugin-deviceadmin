@@ -38,7 +38,9 @@ DeviceAdmin.prototype.installPackage = function(uri, success, error) {
     exec(success, error, "DeviceAdmin", "installPackage", [uri]);
 };
 
-
+DeviceAdmin.prototype.getDeviceInfo = function(success, error) {
+    exec(success, error, "DeviceAdmin", "getDeviceInfo", []);
+};
 
 
 channel.onCordovaReady.subscribe(function() {
